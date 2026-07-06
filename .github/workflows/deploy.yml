@@ -1,0 +1,38 @@
+name: Deploy EKS Deployment
+# Deploy K8s resources to EKS cluster 
+
+on:
+  push:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:  
+  group: ${{ github.workflow }}-${{ github.ref }}  
+  cancel-in-progress: true
+
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    # 1. Downloading the code from the repository to the virtual machine GitHub
+    - name: Checkout Source Code
+      uses: actions/checkout@v6
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ vars.AWS_REGION }}      
+
+    - name: kubectl init
+      run: |
+          echo "Show app version"
+          aws --version
+          aws eks update-kubeconfig --region eu-central-1 --name test-aws-eks-dev
+          kubectl version
+          kubectl get nodes
