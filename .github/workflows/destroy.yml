@@ -25,18 +25,4 @@ jobs:
 
     - name: test
       run: aws --version 
-
-    # - name: configure aws credentials
-    #   uses: aws-actions/configure-aws-credentials@v6
-    #   with:
-    #     role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-    #     aws-region: ${{ vars.AWS_REGION }}      
-
-    # - name: kubectl init
-    #   run: |
-    #       echo "Show app version"
-    #       aws --version
-    #       aws eks update-kubeconfig --region eu-central-1 --name test-aws-eks-dev
-    #       kubectl version
-    #       kubectl get nodes
-          
+         
