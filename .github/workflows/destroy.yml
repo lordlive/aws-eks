@@ -2,8 +2,7 @@ name: Destroy EKS deployment
 # Destroy deployment in EKS
 
 on:
-  push:
-  # workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,7 +14,7 @@ concurrency:
 
 
 jobs:
-  terraform-destroy:
+  test:
     runs-on: ubuntu-latest
     environment: dev
 

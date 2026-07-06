@@ -14,7 +14,7 @@ concurrency:
 
 
 jobs:
-  terraform-destroy:
+  test-k8s-connections:
     runs-on: ubuntu-latest
     environment: dev
 
