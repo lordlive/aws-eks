@@ -34,6 +34,9 @@ jobs:
       run: |
           echo "Show app version"
           aws --version
+          aws sts get-caller-identity
+          aws eks describe-cluster --name eks-alpha-dev --region eu-central-1
+          aws eks list-clusters --region eu-central-1
           aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ vars.AWS_EKS_NAME}}
           kubectl version
           kubectl get nodes
