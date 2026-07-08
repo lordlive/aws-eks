@@ -15,16 +15,16 @@ spec:
     spec:
       containers:
       - name: container
-        image: paulbouwer/hello-kubernetes:1.10
+        image: 807291694811.dkr.ecr.eu-central-1.amazonaws.com/dev-redis:e74e3bafe64d33a5690379d62a4fd6cddc48d5fe
         ports:
-          - containerPort: 8080
+          - containerPort: 80
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
           requests:
             cpu: 200m
-            memory: 512Mi
+            memory: 256Mi
         env:
           - name: MESSAGE
             value: "Hello from EKS Auth App!"
@@ -37,7 +37,7 @@ metadata:
 spec:
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 80
   selector:
     app: app2-service
 ---
