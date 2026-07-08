@@ -3,6 +3,7 @@ name: Deploy EKS Deployment
 
 on:
   push:
+  workflow_dispatch:
 
 permissions:
   contents: read
