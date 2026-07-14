@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1-service
+  template:
+    metadata:
+      labels:
+        app: app1-service
+    spec:
+      containers:
+      - name: container
+        image: paulbouwer/hello-kubernetes:1.10
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        env:
+          - name: MESSAGE
+            value: "Hello from EKS Auth App!"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: app1-service
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1-service
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/group.name: my-shared-apps
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:807291694811:certificate/586747aa-bdba-4796-8503-ad4d00793a8d
+spec:
+  rules:
+    - host: app.lordlive.pp.ua
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app1-service
+                port:
+                  number: 80
